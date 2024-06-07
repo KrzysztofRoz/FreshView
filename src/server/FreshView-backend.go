@@ -1,12 +1,17 @@
 package main
 
 import (
+	"krzysztofRoz/FreshView/repository"
+
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	// Create a new Gin router
 	router := gin.Default()
+	repository.InitializeConfig()
+	repository.ConnectDataBase()
+	repository.SyncDB()
 
 	// Define a route for the root URL
 	router.GET("/", func(c *gin.Context) {
