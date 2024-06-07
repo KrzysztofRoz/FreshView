@@ -6,11 +6,9 @@ type Handler struct {
 	logger *zap.Logger
 }
 
-func NewHandler() *Handler {
-	logger, _ := zap.NewProduction()
-	defer logger.Sync()
+func NewHandler(logger zap.Logger) *Handler {
 
 	return &Handler{
-		logger: logger,
+		logger: &logger,
 	}
 }
