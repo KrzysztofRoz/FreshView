@@ -11,12 +11,12 @@ import (
 func main() {
 	logger, _ := zap.NewProduction()
 	defer logger.Sync()
-	containerHandler := handler.NewContainerHandler(*logger)
-	taskHandler := handler.NewTaskHandlerlogger(*logger)
-	router := gin.Default()
 	repository.InitializeConfig()
 	repository.ConnectDataBase()
 	repository.SyncDB()
+	containerHandler := handler.NewContainerHandler(*logger, repository.DB)
+	taskHandler := handler.NewTaskHandlerlogger(*logger)
+	router := gin.Default()
 	authGroup := router.Group("/v1/api", repository.AuthMiddleweare())
 
 	// Define a route for the root URL
@@ -27,17 +27,17 @@ func main() {
 	//TODO add containers to database
 	authGroup.POST("/add/container/:containername/", containerHandler.AddNewContainer)
 
-	//TODO add task to container
-	authGroup.POST("/add/task/:containername/:taskname", taskHandler.AddNewTask)
-
-	//TODO get all task from container
-	authGroup.GET("/retreive/tasks/:containername", taskHandler.RetreiveAllTasks)
-
 	//TODO get all containers
 	authGroup.GET("/retreive/containers", containerHandler.RetreiveAllContainers)
 
 	//TODO remove container
 	authGroup.DELETE("/remove/container/:containername", containerHandler.RemoveContainer)
+
+	//TODO add task to container
+	authGroup.POST("/add/task/:containername/:taskname", taskHandler.AddNewTask)
+
+	//TODO get all task from container
+	authGroup.GET("/retreive/tasks/:containername", taskHandler.RetreiveAllTasks)
 
 	//TODO remove task from container
 	authGroup.DELETE("/remove/task/:containername/:taskname", taskHandler.RemoveTask)

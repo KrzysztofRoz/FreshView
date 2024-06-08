@@ -16,6 +16,6 @@ type DutieTask struct {
 
 type DutieContainer struct {
 	gorm.Model
-	RoomName string `gorm:"uniqueIndex"`
-	Duties   []DutieTask
+	ContainerName string `gorm:"uniqueIndex"`
+	Duties        []DutieTask
 }
