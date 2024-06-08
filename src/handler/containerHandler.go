@@ -35,6 +35,7 @@ func (ch ContainerHandler) AddNewContainer(ctx *gin.Context) {
 			"error":   "Error inserting to database",
 			"message": result,
 		})
+		return
 	}
 
 	ctx.JSON(http.StatusCreated, gin.H{
@@ -53,7 +54,7 @@ func (ch ContainerHandler) RetreiveAllContainers(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, gin.H{
 			"error": err.Error(),
 		})
-
+		return
 	}
 	if err != nil {
 		ch.handler.logger.Error("Error during retreive event",
@@ -61,6 +62,7 @@ func (ch ContainerHandler) RetreiveAllContainers(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
@@ -80,6 +82,7 @@ func (ch ContainerHandler) RetreiveSingleContainer(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, gin.H{
 			"error": err.Error(),
 		})
+		return
 
 	}
 
@@ -89,6 +92,7 @@ func (ch ContainerHandler) RetreiveSingleContainer(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
@@ -108,6 +112,7 @@ func (ch ContainerHandler) RemoveContainer(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	ctx.JSON(http.StatusNoContent, gin.H{
