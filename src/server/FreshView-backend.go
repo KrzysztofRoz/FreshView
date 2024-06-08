@@ -28,7 +28,7 @@ func main() {
 	authGroup.POST("/add/container/:containername/", containerHandler.AddNewContainer)
 
 	//TODO get all containers
-	authGroup.GET("/retreive/containers", containerHandler.RetreiveAllContainers)
+	authGroup.GET("/retreive/containers/all", containerHandler.RetreiveAllContainers)
 
 	//TODO remove container
 	authGroup.DELETE("/remove/container/:containername", containerHandler.RemoveContainer)
