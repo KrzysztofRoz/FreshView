@@ -8,7 +8,7 @@ import (
 type DutieTask struct {
 	gorm.Model
 	DutieContainerID uint
-	ProductName      string
+	TaskName         string `gorm:"index:idx__dutie_task_name,unique"`
 	Category         string
 	CreatedAt        datatypes.Time
 	UpdatedAt        datatypes.Time

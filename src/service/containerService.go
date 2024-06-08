@@ -47,7 +47,8 @@ func (cs ContainerService) GetAllContainerNames() ([]string, error) {
 	defer cs.logger.Sync()
 	containerNames := make([]string, 0)
 	var containers []model.DutieContainer
-	cs.logger.Info("Query the database")
+
+	cs.logger.Info("Query the database for all containers")
 	result := cs.db.Select("container_name").Find(&containers)
 
 	if result.Error != nil {
@@ -86,5 +87,43 @@ func (cs ContainerService) GetAllContainerNames() ([]string, error) {
 		zap.Strings("containers", containerNames))
 
 	return containerNames, nil
+}
 
+func (cs ContainerService) GetContainerData(containerName string) (model.DutieContainer, error) {
+	container := model.DutieContainer{}
+
+	cs.logger.Info("Query the database for single container",
+		zap.String("containerName", containerName))
+	result := cs.db.Model(&model.DutieContainer{}).Where("container_name = ?", containerName).First(&container)
+
+	if result.Error != nil && errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		cs.logger.Error("No container in database",
+			zap.String("containerName", containerName),
+			zap.Error(result.Error))
+		return container, ErrNoRecords
+	}
+	if result.Error != nil {
+		cs.logger.Error("Error in retiving container from database",
+			zap.Error(result.Error))
+		return container, result.Error
+	}
+
+	return container, nil
+}
+
+func (cs ContainerService) DeleteContainerFormDB(containerName string) error {
+	cs.logger.Info("Start deleting container from database",
+		zap.String("containerName", containerName))
+	result := cs.db.Where("container_name = ?", containerName).Delete(&model.DutieContainer{})
+
+	if result.Error != nil {
+		cs.logger.Error("Error in deleting container from database",
+			zap.String("containerName", containerName),
+			zap.Error(result.Error))
+		return result.Error
+	}
+	cs.logger.Info("Succesfully deleted container from database",
+		zap.String("containerName", containerName))
+
+	return nil
 }

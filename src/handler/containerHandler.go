@@ -69,8 +69,47 @@ func (ch ContainerHandler) RetreiveAllContainers(ctx *gin.Context) {
 	})
 }
 
+func (ch ContainerHandler) RetreiveSingleContainer(ctx *gin.Context) {
+	containerName := ctx.Param("containername")
+	container, err := ch.containerService.GetContainerData(containerName)
+
+	if err != nil && errors.Is(err, service.ErrNoRecords) {
+		ch.handler.logger.Error("There is no such container in database",
+			zap.String("containerName", containerName),
+			zap.Error(err))
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"error": err.Error(),
+		})
+
+	}
+
+	if err != nil {
+		ch.handler.logger.Error("Error during retreive event",
+			zap.Error(err))
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message":       "container sucesfully retreive",
+		"containerName": container.ContainerName,
+		"container":     container,
+	})
+}
+
 func (ch ContainerHandler) RemoveContainer(ctx *gin.Context) {
 	containerName := ctx.Param("containername")
+	err := ch.containerService.DeleteContainerFormDB(containerName)
+
+	if err != nil {
+		ch.handler.logger.Error("Error during delete event",
+			zap.Error(err))
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+	}
+
 	ctx.JSON(http.StatusNoContent, gin.H{
 		"message":       "Endpoint reached",
 		"containerName": containerName,

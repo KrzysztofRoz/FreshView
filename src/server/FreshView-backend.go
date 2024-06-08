@@ -15,7 +15,7 @@ func main() {
 	repository.ConnectDataBase()
 	repository.SyncDB()
 	containerHandler := handler.NewContainerHandler(*logger, repository.DB)
-	taskHandler := handler.NewTaskHandlerlogger(*logger)
+	taskHandler := handler.NewTaskHandler(*logger, repository.DB)
 	router := gin.Default()
 	authGroup := router.Group("/v1/api", repository.AuthMiddleweare())
 
@@ -24,17 +24,20 @@ func main() {
 		c.String(200, "Hello, World!")
 	})
 
-	//TODO add containers to database
+	// Add containers to database
 	authGroup.POST("/add/container/:containername/", containerHandler.AddNewContainer)
 
-	//TODO get all containers
+	// Get all containers
 	authGroup.GET("/retreive/containers/all", containerHandler.RetreiveAllContainers)
 
-	//TODO remove container
+	// Get specyfic container info with
+	authGroup.GET("/retreive/container/:containername", containerHandler.RetreiveSingleContainer)
+
+	// Remove container
 	authGroup.DELETE("/remove/container/:containername", containerHandler.RemoveContainer)
 
 	//TODO add task to container
-	authGroup.POST("/add/task/:containername/:taskname", taskHandler.AddNewTask)
+	authGroup.POST("/add/task/:containername", taskHandler.AddNewTask)
 
 	//TODO get all task from container
 	authGroup.GET("/retreive/tasks/:containername", taskHandler.RetreiveAllTasks)
