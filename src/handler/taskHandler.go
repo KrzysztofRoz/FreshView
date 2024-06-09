@@ -35,14 +35,14 @@ func (th TaskHandler) AddNewTask(ctx *gin.Context) {
 
 	task, err := th.taskService.CreateNewTask(containerName, input)
 
-	if err != nil && errors.Is(err, service.ErrNoRecords) {
+	if err != nil {
 		th.handler.logger.Error("Cannot find matching container",
 			zap.String("containerName", containerName),
 			zap.Error(err))
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"message":       "Cannot find matching container",
 			"containerName": containerName,
-			"error":         err.Error,
+			"error":         err.Error(),
 		})
 		return
 	}
@@ -57,7 +57,7 @@ func (th TaskHandler) AddNewTask(ctx *gin.Context) {
 			"message":       "Dupliacate task",
 			"containerName": containerName,
 			"taskName":      input.TaskName,
-			"error":         err.Error,
+			"error":         err.Error(),
 		})
 		return
 	}
@@ -70,7 +70,7 @@ func (th TaskHandler) AddNewTask(ctx *gin.Context) {
 			"message":       "Dupliacate task",
 			"containerName": containerName,
 			"taskName":      input.TaskName,
-			"error":         err.Error,
+			"error":         err.Error(),
 		})
 		return
 	}
@@ -96,9 +96,19 @@ func (th TaskHandler) RetreiveAllTasks(ctx *gin.Context) {
 func (th TaskHandler) RemoveTask(ctx *gin.Context) {
 	containerName := ctx.Param("containername")
 	taskName := ctx.Param("taskname")
+	err := th.taskService.DeleteTaskFormDB(containerName, taskName)
 
-	ctx.JSON(http.StatusNoContent, gin.H{
-		"message":       "Endpoint reached",
+	if err != nil {
+		th.handler.logger.Error("Error during delete event",
+			zap.Error(err))
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message":       "Task sucesfully deleted",
 		"containerName": containerName,
 		"taskName":      taskName,
 	})

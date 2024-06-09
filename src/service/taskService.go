@@ -82,3 +82,42 @@ func (ts TaskService) AddTaskToDB(task model.DutieTask) error {
 	return nil
 
 }
+
+func (ts TaskService) DeleteTaskFormDB(containerName, taskName string) error {
+	container := model.DutieContainer{}
+	task := model.DutieTask{}
+
+	ts.logger.Info("Query for container data",
+		zap.String("containerName", containerName))
+	result := ts.db.Where("container_name = ?", containerName).First(&container)
+
+	if container.ID == 0 {
+		ts.logger.Error("No such container in database",
+			zap.String("containerName", containerName),
+			zap.Error(result.Error))
+		return ErrNoRecords
+	}
+	if result.Error != nil {
+		ts.logger.Error("Error quering container from database",
+			zap.String("containerName", containerName),
+			zap.Error(result.Error))
+		return result.Error
+	}
+	ts.logger.Info("Deleting task from database",
+		zap.String("containerName", containerName),
+		zap.Uint("containerId", container.ID),
+		zap.String("taskName", taskName))
+
+	result = ts.db.Where("dutie_container_id = ? and task_name =?", container.ID, taskName).Delete(&task)
+
+	if result.Error != nil {
+		ts.logger.Error("Error deleting task from database",
+			zap.String("containerName", containerName),
+			zap.Uint("containerId", container.ID),
+			zap.String("taskName", taskName),
+			zap.Error(result.Error))
+		return result.Error
+	}
+
+	return nil
+}
