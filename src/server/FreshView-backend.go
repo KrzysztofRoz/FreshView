@@ -36,11 +36,11 @@ func main() {
 	// Remove container
 	authGroup.DELETE("/remove/container/:containername", containerHandler.RemoveContainer)
 
-	//TODO add task to container
+	// Add task to container
 	authGroup.POST("/add/task/:containername", taskHandler.AddNewTask)
 
-	//TODO get all task from container
-	authGroup.GET("/retreive/tasks/:containername", taskHandler.RetreiveAllTasks)
+	//TODO Get task details
+	// authGroup.GET("/retreive/task/:containername/:taskname", taskHandler.RetreiveTaskDetailes)
 
 	//TODO remove task from container
 	authGroup.DELETE("/remove/task/:containername/:taskname", taskHandler.RemoveTask)
