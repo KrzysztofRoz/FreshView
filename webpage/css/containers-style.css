@@ -1,0 +1,44 @@
+body{
+    height: 100vh;
+    max-width: 800px;
+    margin: auto;
+    padding: 0;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-image: url(../images/background-image-test.jpg);
+}
+.top-header{
+    flex-basis: 100px;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    align-items: center;
+    border-bottom: solid 3px;
+    border-right: solid 3px;
+    border-left: solid 3px;
+    border-image-slice: 1;
+    flex-direction:row;
+
+}
+.siteName{
+    font-size: 4rem;
+    font-weight: 800;
+}
+.right-elements{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap:20px;
+}
+.social{
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+    padding: 1px;
+}
+
+.header{
+    justify-content: flex-end;
+    background: #1f2937;
+}
