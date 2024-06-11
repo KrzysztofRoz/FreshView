@@ -6,7 +6,7 @@
                     headers: {
                         
                         'Content-Type': 'application/json',
-                        'FreshView-API-Key':'myapikey'
+                        'FreshView-API-Key':'apiKey'
                     },
 
                 });
@@ -37,6 +37,9 @@
 
             // dutieContainerDiv.appendChild(dutieListDiv);
             document.querySelector('.dutiesContainersList').appendChild(dutieContainerDiv);
+            dutieContainerDiv.addEventListener('click',() => {
+                document.querySelector('.main').classList.toggle('shrink');
+            })
         }
 
         // Function to initialize the process
