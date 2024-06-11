@@ -67,7 +67,7 @@ func (ch ContainerHandler) RetreiveAllContainers(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"message":        "Conteiners sucesfully retreive",
-		"conteinerNames": containers,
+		"containerNames": containers,
 	})
 }
 
