@@ -17,11 +17,49 @@ func main() {
 	containerHandler := handler.NewContainerHandler(*logger, repository.DB)
 	taskHandler := handler.NewTaskHandler(*logger, repository.DB)
 	router := gin.Default()
-	authGroup := router.Group("/v1/api", repository.AuthMiddleweare())
+	authGroup := router.Group("/v1/api", repository.AuthMiddleweare(), repository.CORSMiddleware())
+	corsGroup := router.Group("/v1/api", repository.CORSMiddleware())
 
 	// Define a route for the root URL
 	router.GET("/", func(c *gin.Context) {
 		c.String(200, "Hello, World!")
+	})
+
+	//cors endpoints
+	corsGroup.OPTIONS("/add/container/:containername/", func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{
+			"message": "return headers",
+		})
+	})
+
+	corsGroup.OPTIONS("/retreive/containers/all", func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{
+			"message": "return headers",
+		})
+	})
+
+	corsGroup.OPTIONS("/retreive/container/:containername", func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{
+			"message": "return headers",
+		})
+	})
+
+	corsGroup.OPTIONS("/remove/container/:containername", func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{
+			"message": "return headers",
+		})
+	})
+
+	corsGroup.OPTIONS("/add/task/:containername", func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{
+			"message": "return headers",
+		})
+	})
+
+	corsGroup.OPTIONS("/remove/task/:containername/:taskname", func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{
+			"message": "return headers",
+		})
 	})
 
 	// Add containers to database

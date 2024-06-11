@@ -1,0 +1,108 @@
+body{
+    height: 100vh;
+    max-width: 800px;
+    margin: auto;
+    padding: 0;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-image: url(../images/background-image-test.jpg);
+}
+.top-header{
+    flex-basis: 100px;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    align-items: center;
+    border-bottom: solid 3px;
+    border-right: solid 3px;
+    border-left: solid 3px;
+    border-image-slice: 1;
+    flex-direction:row;
+
+}
+.siteName{
+    font-size: 4rem;
+    font-weight: 800;
+}
+.right-elements{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap:20px;
+}
+.social{
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+    padding: 1px;
+}
+
+.header{
+    justify-content: flex-end;
+    background: #1f2937;
+}
+
+
+.main{
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    gap:10px;
+    flex:1;
+    align-content: space-between;
+    justify-content: space-around;
+    background: #1A2238;
+}
+
+.description{
+    text-align: center;
+    padding: 5px;
+    background: #1A2238;;
+    color:#FF6A3D;
+    font-weight: bolder;
+    font-size: large;
+    font-size: calc(26rem/16);
+    justify-content: space-around;
+}
+.textTitle{
+    font-weight: bolder;
+    font-size: x-large;
+    color: #F4DB7D;
+    font-size: calc(32rem/16)
+}
+.mentionedName{
+    color: #9DAAF2;
+
+}
+
+
+.dutieWriter{
+    align-self: center;
+    overflow: hidden;
+    white-space: nowrap;
+    /* border-right: .15em solid #FF6A3D; */
+    font-size: calc(26rem/16);
+    width: 0;
+    animation: typing 1.5s steps(60, end) forwards;
+}
+.duties {
+    display: inline-block;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+
+.containerView {
+    align-self: center;
+    padding: 5px;
+    width: 100px;
+    height: 50px;
+    font-size: x-large;
+    font-weight: bold;
+    color: whitesmoke;
+    background-color: darkblue;
+}
