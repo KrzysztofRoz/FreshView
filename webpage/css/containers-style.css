@@ -1,6 +1,6 @@
 body{
     height: 100vh;
-    max-width: 800px;
+    max-width: 1200px;
     margin: auto;
     padding: 0;
     display:flex;
@@ -41,4 +41,45 @@ body{
 .header{
     justify-content: flex-end;
     background: #1f2937;
+}
+
+.main{
+    display: flex;
+    flex-direction: column;
+    width: 1200px;
+    height: 200px;
+    flex:1;
+    align-content: center;
+    justify-content: flex-start;
+    justify-items: center;
+    align-items: center;
+    background: #1A2238;
+    color:#FF6A3D;
+    font-weight: bolder;
+    font-size: large;
+    font-size: calc(32rem/16);
+}
+.dutiesContainersList{
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+}
+
+.dutieContainer {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    width: max-content;
+    width: 1200px;
+    height: 150px;
+}
+.dutieContainer:hover{
+    background-color: #363d53;
+}
+
+.dutieList{
+    visibility: hidden;
+
 }
