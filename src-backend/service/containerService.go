@@ -107,6 +107,16 @@ func (cs ContainerService) GetContainerData(containerName string) (model.DutieCo
 			zap.Error(result.Error))
 		return container, result.Error
 	}
+	var tasks []model.DutieTask
+	result = cs.db.Where("dutie_container_id = ?", container.ID).Find(&tasks)
+
+	if result.Error != nil {
+		cs.logger.Error("Error in retiving tasks from database",
+			zap.String("containerName", container.ContainerName),
+			zap.Error(result.Error))
+		return container, result.Error
+	}
+	container.Duties = tasks
 
 	return container, nil
 }
