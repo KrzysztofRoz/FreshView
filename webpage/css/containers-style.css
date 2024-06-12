@@ -98,3 +98,15 @@ body{
     visibility: hidden;
 
 }
+.dutiesDisplay {
+    display: none; /* Hidden by default */
+    flex: 1;
+    padding: 20px;
+    background-color: #f9f9f9;
+    color: #333;
+    overflow-y: auto; /* Scroll if content overflows */
+}
+
+.dutiesDisplay.active {
+    display: block; /* Show when active */
+}
