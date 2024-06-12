@@ -76,7 +76,7 @@
 
                 const taskNameDiv = document.createElement('div');
                 taskNameDiv.className = 'taskName';
-                taskNameDiv.textContent = `Task Name: ${duty.TaskName}`;
+                taskNameDiv.textContent = `${duty.TaskName}`;
 
                 const categoryDiv = document.createElement('div');
                 categoryDiv.className = 'category';
