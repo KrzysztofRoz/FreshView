@@ -100,13 +100,17 @@ body{
 }
 
 
-.dutieList{
+#dutiesList{
     visibility: hidden;
+    display: flex; /* Show when active */
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+
 
 }
 .dutiesDisplay {
     display: none; /* Hidden by default */
-    flex: 1;
     padding: 20px;
     background-color: #f9f9f9;
     color: #333;
@@ -114,24 +118,51 @@ body{
 }
 
 .dutiesDisplay.active {
-    display: flex; /* Show when active */
-    flex-direction: row;
-    flex-wrap: wrap;
+
     /* justify-content:flex-start ; */
     height: 1000px;
+    width: 100%;
     background: #1A2238;
+    display: block;
+}
+.dutiesDisplay.active #dutiesList{
+visibility: visible;
 }
 
 
 .duty{
+    box-sizing: border-box;
     background: #1A2238;
     color:#FF6A3D;
     border-radius: 10%;
     border: solid 5px black;
     padding: 1px;
     height: 200px;
-    width: 300px;
+    width: 350px;
     margin: 10px;
+    align-content: center;
+    justify-content: center;
+
+}
+
+input{
+    background-color: #333;
+    color:#FF6A3D;
+    font-size: large;
+    font-weight: bold;
+}
+
+button{
+ background-color: #FF6A3D;
+ color: #1A2238;
+ font-size: large;
+ font-weight: bold;
+ border-radius: 25%;
+ border: solid 3px #333;
+}
+
+button:hover{
+    background-color: #eb9a81;
 
 }
 

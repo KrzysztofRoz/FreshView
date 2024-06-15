@@ -29,7 +29,7 @@
                     }
                 });
                 const data = await response.json();
-                console.log(data);
+                console.log(data.container.Duties);
                 return data.container.Duties; // Adjust based on your actual JSON structure
             } catch (error) {
                 console.error(`Error fetching duties for container ${containerName}:`, error);
@@ -60,12 +60,12 @@
             dutieContainerDiv.addEventListener('click', async () => {
                 document.querySelector('.main').classList.add('shrink');
                 const duties = await fetchDuties(container);
-                displayDuties(duties);
+                displayDuties(duties,container);
                 });
             }
 
         // Function to display duties
-        function displayDuties(duties) {
+        function displayDuties(duties,container) {
             const dutiesDisplay = document.querySelector('.dutiesDisplay');
             const dutiesList = document.getElementById('dutiesList');
             dutiesList.innerHTML = ''; // Clear previous duties
@@ -73,6 +73,7 @@
             duties.forEach(duty => {
                 const dutyDiv = document.createElement('div');
                 dutyDiv.className = 'duty';
+                dutyDiv.setAttribute('container-name',container)
 
                 const taskNameDiv = document.createElement('div');
                 taskNameDiv.className = 'taskName';
@@ -83,8 +84,11 @@
                 categoryDiv.textContent = `Category: ${duty.Category}`;
 
                 const createdAtDiv = document.createElement('div');
+                console.log("czas :", duty.CreatedAt)
                 createdAtDiv.className = 'createdAt';
-                createdAtDiv.textContent = `Created At: ${new Date(duty.CreatedAt).toLocaleString()}`;
+                var timeDate = duty.CreatedAt.replace("T"," ")
+                console.log(duty.CreatedAt)
+                createdAtDiv.textContent = `Created At: ${new Date(timeDate).toLocaleDateString()} ${new Date(timeDate).toLocaleTimeString()}`;
 
                 dutyDiv.appendChild(taskNameDiv);
                 dutyDiv.appendChild(categoryDiv);
@@ -93,7 +97,85 @@
                 dutiesList.appendChild(dutyDiv);
             });
 
+            dutiesList.appendChild(createDutieTaskDiv(container))
+
             dutiesDisplay.classList.add('active');
+        }
+
+        function createDutieTaskDiv(container) {
+            // Create the main div
+            const dutieTaskDiv = document.createElement('div');
+            dutieTaskDiv.className = 'duty';
+            dutieTaskDiv.classList.add('toAddContainer')
+            dutieTaskDiv.setAttribute('container-name',container)
+        
+            // Create the Task Name input field
+            const taskNameInput = document.createElement('input');
+            taskNameInput.type = 'text';
+            taskNameInput.id = 'taskNameInput';
+            taskNameInput.placeholder = 'Task Name';
+        
+            // Create the Category input field
+            const categoryInput = document.createElement('input');
+            categoryInput.type = 'text';
+            categoryInput.id = 'categoryInput';
+            categoryInput.placeholder = 'Category';
+        
+            // Create the Add Task button
+            const addTaskButton = document.createElement('button');
+            addTaskButton.id = 'addTaskButton';
+            addTaskButton.textContent = 'Add Task';
+        
+            // Append the input fields and button to the main div
+            addTaskButton.addEventListener('click',addTask)
+            dutieTaskDiv.appendChild(taskNameInput);
+            dutieTaskDiv.appendChild(categoryInput);
+            dutieTaskDiv.appendChild(addTaskButton);
+
+        
+            return dutieTaskDiv
+        }
+
+        async function addTask() {
+            const taskName = document.getElementById('taskNameInput').value;
+            const category = document.getElementById('categoryInput').value;
+            const container = document.getElementsByClassName('toAddContainer')[0].getAttribute('container-name')
+            console.log("container is ",container)
+        
+            if (!taskName || !category) {
+                alert('Please fill in both fields');
+                return;
+            }
+        
+            try {
+                const response = await fetch(`http://localhost:8080/v1/api/add/task/${container}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'FreshView-API-Key': CONFIG.FRESHVIEW_API_KEY
+                    },
+                    body: JSON.stringify({
+                        taskName: taskName,
+                        taskCategory: category
+                    })
+                });
+                console.log(response)
+        
+                if (response.ok) {
+                    alert('Task added successfully');
+                    document.getElementById('taskNameInput').value = '';
+                    document.getElementById('categoryInput').value = '';
+                } else {
+                    const errorData = await response.json();
+                    console.error('Error adding task:', errorData);
+                    alert('Error adding task');
+                }
+            } catch (error) {
+                console.error('Error adding task:', error);
+                alert('Error adding task');
+            }
+            // displayDuties(fetchDuties(container))
+
         }
 
 
